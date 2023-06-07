@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Msg sending demo</title>
+    <style>
+        .text-center {
+            text-align: center;
+        }
+
+        .form {
+            display: grid;
+            gap: 3px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h2 class="text-center">MSG sending demo</h2>
+    <div class="form">
+        <label for="message">Message:</label>
+        <textarea rows="5" maxlength="500" placeholder="message" type="text" name="message" id="message"></textarea>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+    <script>
+        let sending = false;
+        async function sendMessage() {
+            if (sending) return;
+            sending = true;
+            const msg = document.getElementById("message").value;
+            if (msg.length == 0) {
+                alert("Message can't be empty");
+                sending = false;
+                return;
+            }
+            const rs = await fetch('/', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ msg })
+            })
+            const json = await rs.json();
+            alert(json.msg);
+            sending = false;
+        }
+    </script>
+</body>
+
+</html>
